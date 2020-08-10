@@ -30,6 +30,7 @@ write_dockerfile <-
              path = ".",
              maintainer = getOption("usethis.full_name"),
              r_date = NULL,
+             r_version = NULL,
              branch = "master",
              install_github = FALSE) {
     if (!fs::file_exists("DESCRIPTION")) {
@@ -51,7 +52,10 @@ write_dockerfile <-
     repo <- gh::gh_tree_remote(path)$repo
 
     # If the user does not specify a date, use the date of the last touched file on the project
-    if (is.null(r_date)) {
+    if(!is.null(r_version)){
+      version <- r_version
+   
+    } else if (is.null(r_date)) {
       version <- r_version_lookup(last_modification_date())
     } else {
       version <- r_version_lookup(r_date)
